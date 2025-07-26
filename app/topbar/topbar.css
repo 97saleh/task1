@@ -1,0 +1,36 @@
+.topbar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 10px ;
+}
+
+.topbar-logo {
+    display: flex;
+    align-items: center;
+}
+
+.topbar-logo-blue {
+    background-color: rgb(106, 106, 255);
+    color: white;
+    font-size: 25px;
+    font-weight: bold;
+    border-radius: 10px;
+    padding: 5px 15px;
+}
+
+.topbar-logo-text {
+    margin-left: 5px;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.topbar-logo-kyc {
+    margin-left: 5px;
+    background-color: rgba(128, 128, 128, 0.432);
+    border-radius: 10px;
+    padding: 3px 9px;
+    color: rgb(29, 29, 29);
+    font-size: 10px;
+    font-weight: 300;
+}
