@@ -4,34 +4,42 @@ import { Box, Button } from '@mui/material'
 
 const Topbar = () => {
     return (
-        <div className='topbar'>
-            <div className='topbar-logo'>
-                <div className='topbar-logo-blue' >Q</div>
-                <div className='topbar-logo-text' >Anfra</div>
-                <div className='topbar-logo-kyc' >KYC</div>
-            </div>
-            <div>
-                <Box
-                    sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        width: "300px",
-                        height: "4px",
-                        borderRadius: "5px",
-                        backgroundColor: "blue",
-                    }}
-                /> </div>
-            <div>
-                <Button 
-                sx={()=>({
-                    color: "gray" ,
-                    fontSize: "12px",
-                    marginRight: "15px" ,
-                })}
-                 variant="text">Back to Main Demo</Button>
-                <Button variant="contained">Get Formo</Button>
-            </div>
-        </div>
+        <Box sx={{
+            display: "flex",
+            alignItems: "center",
+            bgcolor: "white",
+        }} >
+            <Box sx={{
+                display: "flex",
+                alignItems: "center",
+                m: 2,
+                gap: 0.5,
+            }}>
+                <Box sx={{
+                    backgroundColor: "rgb(106, 106, 255)",
+                    color: "white",
+                    fontsSize: "32px",
+                    fontWeight: "bold",
+                    borderRadius: "10px",
+                    padding: " 5px 15px",
+                }} >Q</Box>
+                <Box sx={{
+                    marginRight: "5px",
+                    fontSize: "24px",
+                    fontWeight: "bold",
+                }}
+                >Anfra</Box>
+                <Box sx={{
+                    marginRight: "5px",
+                    backgroundColor: "rgba(128, 128, 128, 0.432)",
+                    borderRadius: "10px",
+                    padding: "3px 9px",
+                    color: " rgb(29, 29, 29)",
+                    fontSize: "10px",
+                    fontWeight: "300",
+                }} >KYC</Box>
+            </Box>
+        </Box >
     )
 }
 

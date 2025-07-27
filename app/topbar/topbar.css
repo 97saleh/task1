@@ -20,13 +20,13 @@
 }
 
 .topbar-logo-text {
-    margin-left: 5px;
+    margin-right: 5px;
     font-size: 32px;
     font-weight: bold;
 }
 
 .topbar-logo-kyc {
-    margin-left: 5px;
+    margin-right: 5px;
     background-color: rgba(128, 128, 128, 0.432);
     border-radius: 10px;
     padding: 3px 9px;

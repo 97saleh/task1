@@ -1,99 +1,134 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import "./section.css"
-import { Button, Checkbox, FormControl, FormControlLabel, InputLabel, TextField, Typography } from '@mui/material'
+import { Alert, Box, Button, Grid, Typography } from '@mui/material'
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
-import Input from '~/input/input'
-import InputFull from '~/input/inputFull'
-import Buttom from '~/buttom/buttom'
-import ButttomBgNone from '~/buttom/butttomBgNone'
-import YourDocuments from '~/yourDuct/yourDuct';
+import Input from '~/input'
+import { useCreate, useUpdate, useUser } from '~/services/queries';
+import { NavLink, useNavigate, useSearchParams } from 'react-router';
+import DoneIcon from '@mui/icons-material/Done';
+import { FormProvider, useForm } from "react-hook-form"
+import type { User } from '~/services/models';
+
 
 const Section = () => {
+    const [searchParams] = useSearchParams();
+    const { data: selectedUser } = useUser(searchParams.get("id") || undefined);
+    const methods = useForm<User>({
+        defaultValues: {
+            address: "",
+            familyName: "",
+            name: "",
+            nationalCode: "",
+            phoneNumber: ""
+        }
+    });
+    const { handleSubmit, watch } = methods;
+    const navigate = useNavigate();
 
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [state, setState] = useState("");
-    const [address1, setAddress1] = useState("");
-    const [address2, setAddress2] = useState("");
-    const [city, setCity] = useState("");
-    const [postcode, setPostcode] = useState("");
-    const [agree, setAgree] = useState(false);
+    const { mutate: create } = useCreate();
+    const { mutate: update } = useUpdate();
+
+    useEffect(() => {
+        if (selectedUser) {
+            methods.reset(selectedUser);
+        }
+    }, [selectedUser]);
+
+    const onSubmit = (data: User) => {
+        const id = selectedUser?.id
+        if (id) {
+            update({ ...data, id }, {
+                onSuccess: () => navigate("/usersList")
+            });
+        } else {
+            create(data, {
+                onSuccess: () => navigate("/usersList")
+            });
+        }
+    };
+
 
     return (
-        <div className='section'>
-            <div className='section-midlle'>
-                <div>Persional Information</div>
-                <div className='section-input section-1' >
-                    <div className='section-input section-2'>
-                        <Input name="fristname" value={firstName} setvalue={setFirstName} />
-                    </div>
-                    <div className='section-input section-2'>
-                        <Input name="Lastname" value={lastName} setvalue={setLastName} />
-                    </div>
 
-                </div>
+        <FormProvider  {...methods} >
+            <Grid container component={"form"} onSubmit={handleSubmit(onSubmit)} >
+                <Grid sx={{ mx: "auto", mt: 5, p: 2, position: "relative" }} >
+                    {selectedUser?.state === "locked" && (
+                        <React.Fragment>
+                            <Box sx={{ position: "absolute", left: 0, right: 0, top: 0, bottom: 0, width: "100%", height: "100%", backdropFilter: "blur(10px)", zIndex: 5 }} />
+                            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", position: "absolute", left: 0, right: 0, top: 0, bottom: 0, width: "100%", height: "100%", zIndex: 6 }} >
+                                <Alert color='error' sx={{ width: "100%" }}>
+                                    this user is locked
+                                </Alert>
+                            </Box>
+                        </React.Fragment>
+                    )}
 
-                <div className='section-input section-1' >
-                    <div className='section-input section-2'>
-                        <InputFull name="state/province" value={state} setvalue={setState} />
-                    </div>
-                </div>
+                    <Typography>اطلاعات شخصی</Typography>
+                    <Grid sx={{ mt: 2 }} container spacing={2}>
+                        <Grid size={{ lg: 6 }}>
+                            <Input fullWidth label="نام" placeholder='نام' name='name' autoFocus rules={{
+                                required: "فیلد اجباری",
+                            }}
+                            />
+                        </Grid>
+                        <Grid size={{ lg: 6 }}>
+                            <Input fullWidth label="نام خانوادگی" placeholder='نام خانوادگی' name='familyName' rules={{
+                                required: "فیلد اجباری",
+                            }} />
+                        </Grid>
+                    </Grid>
 
-                <div className='section-input section-1' >
-                    <div className='section-input section-2'>
-                        <Input name="Address Line1" value={address1} setvalue={setAddress1} />
-                    </div>
-                    <div className='section-input section-2'>
-                        <Input name="Address Line 2" value={address2} setvalue={setAddress2} />
-                    </div>
-
-                </div>
-
-                <div className='section-input section-1' >
-                    <div className='section-input section-2'>
-                        <Input name="City"  value={city} setvalue={setCity} />
-                    </div>
-                    <div className='section-input section-2'>
-                        <Input name="Post Code" value={postcode} setvalue={setPostcode} />
-                    </div>
-
-                </div>
-
-                <div className='section-input section-1' >
-                    <div className='section-input section-2'>
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={agree}
-                                    onChange={(e) => setAgree(e.target.checked)}
-                                />
-                            }
-                            label={
-                                <Typography variant="body2">
-                                    I accept the{" "}
-                                    <a href="#" style={{ color: "#1976d2" }}>
-                                        Terms of Conditions
-                                    </a>
-                                    {" "} and{" "}
-                                    <a href="#" style={{ color: "#1976d2" }}>
-                                        Privacy Policy
-                                    </a>
-                                </Typography>
-                            }
-                            sx={{ mb: 2 }}
+                    <Grid size={{ xs: 12 }} mt={2}>
+                        <Input fullWidth label="آدرس" placeholder='آدرس' name='address' rules={{
+                            required: "فیلد اجباری",
+                        }}
                         />
-                    </div>
-                </div>
+                    </Grid>
 
-                <Buttom />
+                    <Grid sx={{ mt: 2 }} spacing={2} container>
+                        <Grid size={{ xs: 12, lg: 6 }}>
+                            <Input format='###########' type='number' fullWidth label="موبایل" placeholder='موبایل' name='phoneNumber'
+                                rules={{
+                                    required: "فیلد اجباری",
+                                    pattern: {
+                                        value: /^09\d{9}$/,
+                                        message: "فرمت شماره همراه اشتباه است"
+                                    }
+                                }
+                                } />
+                        </Grid>
+                        <Grid size={{ xs: 12, lg: 6 }}>
+                            <Input format='##########' type='number' fullWidth label="کد ملی" placeholder='کد ملی' name="nationalCode"
+                                rules={{
+                                    required: "فیلد اجباری",
+                                }} />
+                        </Grid>
+                    </Grid>
 
-                <ButttomBgNone name='Back To Previous' icon={<KeyboardBackspaceIcon />} />
-            </div>
+                    <Button
+                        variant="contained"
+                        type="submit"
+                        fullWidth
+                        sx={{ mt: 2, textAlign: "center", fontWeight: "bold" }}
+                    >
+                        مدارک را ارسال کنید  <DoneIcon sx={() => ({ margin: "10px", })} />
+                    </Button>
 
-            <div className='section-right'>
-                <YourDocuments />
-            </div>
-        </div>
+                    <Button
+                        component={NavLink}
+                        to={'/usersList'}
+                        variant="text"
+                        type="button"
+                        fullWidth
+                        sx={{ color: "gray", mt: 2, textAlign: "center", fontWeight: "bold" }}
+                    >
+                        بازگشت <KeyboardBackspaceIcon />
+                    </Button>
+
+                </Grid>
+            </Grid>
+        </FormProvider>
     )
 }
 

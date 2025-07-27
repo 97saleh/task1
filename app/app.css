@@ -5,6 +5,8 @@
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
+
+
 html,
 body {
   @apply bg-white dark:bg-gray-950;
@@ -12,4 +14,16 @@ body {
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
   }
+}
+
+
+@font-face {
+  font-family: 'IRANSans';
+  src: url('../public/font/IRANSansXV.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: 'IRANSans', sans-serif;
 }

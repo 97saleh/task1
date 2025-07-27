@@ -3,6 +3,7 @@
 import { Box, Typography, List, ListItem, ListItemIcon, ListItemText, IconButton } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import AttachmentIcon from '@mui/icons-material/Attachment';
+import "../app.css"
 
 const files = [
   "National_ID_Front.JPG",
@@ -22,7 +23,7 @@ const YourDocuments = () => {
       }}
     >
       <Typography variant="subtitle1" fontWeight="bold" mb={2}>
-        Your Documents
+        اسناد شما
       </Typography>
       <List dense>
         {files.map((file, index) => (
